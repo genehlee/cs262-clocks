@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package com.clocks;
+
+/*
+* MessageService is a gRPC service that allows a client process to send a message to a server process.
+*/
+service MessageService {
+  // Send a message to the server. Expect nothing in return.
+  rpc Send (Message) returns (Empty) {}
+}
+
+// A message contains a sender and a timestamp
+message Message {
+  uint32 sender = 1;
+  uint64 timestamp = 2;
+}
+
+// A message that contains nothing
+message Empty {}
