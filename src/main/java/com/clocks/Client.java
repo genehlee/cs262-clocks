@@ -137,6 +137,9 @@ public class Client implements Runnable {
                     .build()
             );
         }
+
+        // log the ticks per second
+        logger.println("Ticks per second: " + ticksPerSecond);
     }
 
     private void checkArgs(String[] args) {
