@@ -1,6 +1,6 @@
 package com.clocks;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,103 +16,96 @@ import com.clocks.MessageServiceOuterClass.Empty;
 /*
  * Client program for the clocks project
  */
-public class Client {
+public class Client implements Runnable {
+
+    // Arguments passed to the client
+    private String[] args;
+
     // Port of this client
-    static int port;
+    public int port;
 
     // Ports of other clients
-    static int[] other_ports;
+    public int[] other_ports;
     
     // Clock speed of this client
-    static int ticksPerSecond;
-    static long waitMillis;
+    public int ticksPerSecond;
+    public long waitMillis;
 
     // Message queue
-    static ConcurrentLinkedQueue<QueueMessage> messageQueue;
+    public ConcurrentLinkedQueue<QueueMessage> messageQueue;
 
     // Logical clock value
-    static long logicalClock;
+    public long logicalClock;
 
     // PrintWriter to write to log file
-    static PrintWriter logger;
+    public PrintWriter logger;
     
     // gRPC stubs
-    static MessageServiceGrpc.MessageServiceBlockingStub[] stubs;
+    public MessageServiceGrpc.MessageServiceBlockingStub[] stubs;
 
     // gRPC server
-    static Server server;
+    public Server server;
+
+    public Client(String[] args) {
+        this.args = args;
+    }
 
     /* 
-     * Runs client program
+     * Runs the client
      * @param args Client port, other port 1, other port 2
      */
-    public static void main(String[] args) throws FileNotFoundException {
-        // Initialize the client
-        init(args);
-
-        while(true) {
-            Action action;
-            
-            // If there are any messages in the queue, then take the RECEIVE_MESSAGE action
-            if(!messageQueue.isEmpty()) {
-                action = Action.RECEIVE_MESSAGE;
-            }
-
-            // Otherwise, pick a random action
-            else {
-                int rand = randInt(Constants.MIN_ACTION, Constants.MAX_ACTION);
-                action = Action.fromInt(rand);
-            }
-
-            // Perform the action
-            handleAction(action);
-
-            // Log the action
-            log(action);
-
-            // Increment the logical clock
-            logicalClock++;
-
-            // Wait according to the clock speed
-            try {
+    public void run() {
+        // start a timer
+        long startTime = System.currentTimeMillis();
+        try {
+            // Initialize the client
+            init(args);
+            while(true) {
+                // if the time for the simulation is up, then exit the program
+                if(System.currentTimeMillis() - startTime > Constants.LIFETIME) return;
+                Action action;
+                // If there are any messages in the queue, then take the RECEIVE_MESSAGE action
+                if(!messageQueue.isEmpty()) {
+                    action = Action.RECEIVE_MESSAGE;
+                }
+                // Otherwise, pick a random action
+                else {
+                    int rand = randInt(Constants.MIN_ACTION, Constants.MAX_ACTION);
+                    action = Action.fromInt(rand);
+                }
+                // Perform the action
+                handleAction(action);
+                // Log the action
+                log(action);
+                // Increment the logical clock
+                logicalClock++;
+                // Wait according to the clock speed
                 Thread.sleep(waitMillis);
-            } catch (InterruptedException e) {
-                // If the thread is interrupted, then exit the program
-                e.printStackTrace();
-                break;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the client
+            close();
         }
-
-        // Close the client
-        close();
     }
 
     /*
      * Initializes the client
      * @param args Client port, other port 1, other port 2
      */
-    public static void init(String[] args) throws FileNotFoundException {
+    public void init(String[] args) throws InterruptedException, IOException {
         System.out.println("Running client...");
 
         // Check if the correct number of arguments were passed
-        if(args.length != Constants.NUM_PORTS) {
-            String errorMessage = "Usage: java Client <client port>";
-            for (int i = 1; i < Constants.NUM_PORTS; i++) {
-                errorMessage += " <other port " + i + ">";
-            }
-            throw new IllegalArgumentException(errorMessage);
-        }
+        checkArgs(args);
 
         // Read port numbers from the command line
-        port = Integer.parseInt(args[0]);
-        other_ports = new int[Constants.NUM_PORTS - 1];
-        for (int i = 0; i < other_ports.length; i++) {
-            other_ports[i] = Integer.parseInt(args[i + 1]);
-        }
+        readPorts(args);
 
         // Assign a random clock speed to the client and calculate the wait time
         ticksPerSecond = randInt(Constants.MIN_CLOCK_SPEED, Constants.MAX_CLOCK_SPEED);
-        waitMillis = 1000 / ticksPerSecond;
+        waitMillis = Constants.MILLISECONDS_PER_SECOND / ticksPerSecond;
 
         // Initialize the message queue
         messageQueue = new ConcurrentLinkedQueue<QueueMessage>();
@@ -128,19 +121,16 @@ public class Client {
             .addService(new MessageServiceImpl())
             .build();
         
+        // start the server
+        server.start();
+        
         // wait for other clients to start
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // If the thread is interrupted, then exit the program
-            close();
-            e.printStackTrace();
-            System.exit(1);
-        }
+        Thread.sleep(Constants.WAIT_TIME_FOR_CONNECTIONS);
 
         // connect to the two other clients
         stubs = new MessageServiceGrpc.MessageServiceBlockingStub[other_ports.length];
         for(int i = 0; i < other_ports.length; i++) {
+            System.out.println("Connecting port " + port + " to port " + other_ports[i]);
             stubs[i] = MessageServiceGrpc.newBlockingStub(
                 ManagedChannelBuilder.forAddress(Constants.HOST, other_ports[i])
                     .usePlaintext()
@@ -149,10 +139,28 @@ public class Client {
         }
     }
 
+    private void checkArgs(String[] args) {
+        if(args.length != Constants.NUM_PORTS) {
+            String errorMessage = "Usage: java Client <client port>";
+            for (int i = 1; i < Constants.NUM_PORTS; i++) {
+                errorMessage += " <other port " + i + ">";
+            }
+            throw new IllegalArgumentException(errorMessage);
+        }
+    }
+
+    private void readPorts(String[] args) {
+        port = Integer.parseInt(args[0]);
+        other_ports = new int[Constants.NUM_PORTS - 1];
+        for (int i = 0; i < other_ports.length; i++) {
+            other_ports[i] = Integer.parseInt(args[i + 1]);
+        }
+    }
+
     /* 
      * Closes the client
      */
-    public static void close() {
+    public void close() {
         System.out.println("Shutting down...");
 
         // Close the logger
@@ -169,7 +177,7 @@ public class Client {
      * Handles an action
      * @param action Action to handle
      */
-    public static void handleAction(Action action) {
+    public void handleAction(Action action) {
         switch(action) {
             case RECEIVE_MESSAGE:
                 // Remove the first message in the queue
@@ -204,7 +212,7 @@ public class Client {
      * Logs information based on action
      * @param action Action to log
      */
-    public static void log(Action action) {
+    public void log(Action action) {
         long global_time = System.currentTimeMillis();
 
         String message;
@@ -226,7 +234,6 @@ public class Client {
                 message = "Undefined action at " + global_time + " at logical clock time " + logicalClock + ".";
                 break;
         }
-        
         logger.println(message);
     }
 
@@ -235,7 +242,7 @@ public class Client {
     * @param recipientStub gRPC stub of the recipient
     * @param timestamp Timestamp of the message
     */
-    public static void send(MessageServiceGrpc.MessageServiceBlockingStub recipientStub, long timestamp) {
+    public void send(MessageServiceGrpc.MessageServiceBlockingStub recipientStub, long timestamp) {
         // Create the message
         Message message = Message.newBuilder()
             .setSender(port)
@@ -252,14 +259,14 @@ public class Client {
      * @param max Maximum value
      * @return Random integer between min and max inclusive
      */
-    public static int randInt(int min, int max) {
+    public int randInt(int min, int max) {
         return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
     /*
     * gRPC server implementation. Defines the handlers that are called when a message is received by the gRPC server.
     */
-    static class MessageServiceImpl extends MessageServiceGrpc.MessageServiceImplBase {
+    class MessageServiceImpl extends MessageServiceGrpc.MessageServiceImplBase {
         /*
          * Handles a message received
          * @param request Message received
@@ -279,5 +286,14 @@ public class Client {
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         }
+    }
+
+    /* 
+     * Runs the program
+     * @param args Client port, other port 1, other port 2
+     */
+    public static void main(String[] args) {
+        Client client = new Client(args);
+        client.run();
     }
 }
