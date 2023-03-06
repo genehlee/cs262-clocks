@@ -2,14 +2,11 @@ package com.clocks;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.clocks.MessageServiceGrpc.MessageServiceBlockingStub;
-
-import com.clocks.MessageServiceOuterClass.Message;
-
-import io.grpc.stub.StreamObserver;
 
 /*
 * Unit tests for the Client class.
@@ -25,7 +22,7 @@ public class ClientTest {
     try {
       Thread.sleep(Constants.LIFETIME);
     } catch (InterruptedException e) {
-      e.printStackTrace();
+      assertTrue(false);
     }
     // Make sure the client thread is dead
     assertFalse(clientThread.isAlive());
@@ -41,7 +38,7 @@ public class ClientTest {
     try {
       Thread.sleep(5000);
     } catch (InterruptedException e) {
-      e.printStackTrace();
+      assertTrue(false);
     }
     // Make sure handleAction is called with a RECEIVE_MESSAGE action at least once
     Mockito.verify(client, Mockito.atLeastOnce()).handleAction(Action.RECEIVE_MESSAGE);
@@ -54,7 +51,6 @@ public class ClientTest {
     try {
       client.init(args);
     } catch (Exception e) {
-      e.printStackTrace();
       assertTrue(false);
     }
     assertTrue(client.port == 8000);
@@ -65,10 +61,16 @@ public class ClientTest {
   @Test
   public void handleAction_RECEIVE_MESSAGE() {
     // Call handleAction with a RECEIVE_MESSAGE and confirm that a message is popped from the queue and that the logical clock is updated properly
-    Client client = new Client(new String[] { "8000", "8000", "8000" });
-    client.run();
+    String[] args = new String[] { "8000", "8000", "8000" };
+    Client client = new Client(args);
+    try {
+      client.init(args);
+    } catch (Exception e) {
+      assertTrue(false);
+    }
     client.messageQueue.add(new QueueMessage(1234, 1234));
     client.handleAction(Action.RECEIVE_MESSAGE);
+    
     assertTrue(client.messageQueue.size() == 0);
     assertTrue(client.logicalClock == 1234);
   }
@@ -76,45 +78,68 @@ public class ClientTest {
   @Test
   public void handleAction_SEND_TO_PORT_1() {
     // Call handleAction with a SEND_TO_PORT_1
-    Client client = Mockito.spy(new Client(new String[] { "8000", "8001", "8002" }));
-    client.run();
+    String[] args = new String[] { "8000", "8000", "8000" };
+    Client client = Mockito.spy(new Client(args));
+    try {
+      client.init(args);
+    } catch (Exception e) {
+      assertTrue(false);
+    }
     client.handleAction(Action.SEND_TO_PORT_1);
     // extract the stub
     MessageServiceBlockingStub stub = client.stubs[0];
     // make sure send() is called with the correct stub but ignore the logicalClock argument
-    Mockito.verify(client).send(stub, Mockito.anyInt());
+    Mockito.verify(client).send(Mockito.eq(stub), Mockito.anyLong());
   }
 
   @Test
   public void handleAction_SEND_TO_PORT_2() {
     // Call handleAction with a SEND_TO_PORT_2
-    Client client = Mockito.spy(new Client(new String[] { "8000", "8001", "8002" }));
+    String[] args = new String[] { "8000", "8000", "8000" };
+    Client client = Mockito.spy(new Client(args));
+    try {
+      client.init(args);
+    } catch (Exception e) {
+      assertTrue(false);
+    }
     client.handleAction(Action.SEND_TO_PORT_2);
     // extract the stub
     MessageServiceBlockingStub stub = client.stubs[1];
     // make sure send() is called with the correct stub but ignore the logicalClock argument
-    Mockito.verify(client).send(stub, Mockito.anyInt());
+    Mockito.verify(client).send(Mockito.eq(stub), Mockito.anyLong());
   }
 
   @Test
   public void handleAction_SEND_TO_BOTH_PORTS() {
     // Call handleAction with a SEND_TO_BOTH_PORTS
-    Client client = Mockito.spy(new Client(new String[] { "8000", "8001", "8002" }));
+    String[] args = new String[] { "8000", "8000", "8000" };
+    Client client = Mockito.spy(new Client(args));
+    try {
+      client.init(args);
+    } catch (Exception e) {
+      assertTrue(false);
+    }
     client.handleAction(Action.SEND_TO_BOTH_PORTS);
     // extract the stubs
     MessageServiceBlockingStub stub1 = client.stubs[0];
     MessageServiceBlockingStub stub2 = client.stubs[1];
     // make sure send() is called with the correct stubs but ignore the logicalClock argument
-    Mockito.verify(client).send(stub1, Mockito.anyInt());
-    Mockito.verify(client).send(stub2, Mockito.anyInt());
+    Mockito.verify(client).send(Mockito.eq(stub1), Mockito.anyLong());
+    Mockito.verify(client).send(Mockito.eq(stub2), Mockito.anyLong());
   }
 
   @Test
   public void log_shouldLog() {
     // Call log with a message and make sure it calls logger.println()
-    Client client = Mockito.spy(new Client(new String[] { "8000", "8000", "8000" }));
+    String[] args = new String[] { "8000", "8000", "8000" };
+    Client client = Mockito.spy(new Client(args));
+    try {
+      client.init(args);
+    } catch (Exception e) {
+      assertTrue(false);
+    }
     client.log(Action.INTERNAL_EVENT);
-    Mockito.verify(client.logger).println(Mockito.anyString());
+    Mockito.verify(client).logger.println(Mockito.anyString());
   }
 
   @Test
