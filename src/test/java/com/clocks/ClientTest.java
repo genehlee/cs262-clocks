@@ -66,6 +66,7 @@ public class ClientTest {
   public void handleAction_RECEIVE_MESSAGE() {
     // Call handleAction with a RECEIVE_MESSAGE and confirm that a message is popped from the queue and that the logical clock is updated properly
     Client client = new Client(new String[] { "8000", "8000", "8000" });
+    client.run();
     client.messageQueue.add(new QueueMessage(1234, 1234));
     client.handleAction(Action.RECEIVE_MESSAGE);
     assertTrue(client.messageQueue.size() == 0);
@@ -76,6 +77,7 @@ public class ClientTest {
   public void handleAction_SEND_TO_PORT_1() {
     // Call handleAction with a SEND_TO_PORT_1
     Client client = Mockito.spy(new Client(new String[] { "8000", "8001", "8002" }));
+    client.run();
     client.handleAction(Action.SEND_TO_PORT_1);
     // extract the stub
     MessageServiceBlockingStub stub = client.stubs[0];
