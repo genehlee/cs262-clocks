@@ -69,6 +69,13 @@ Plotting functions
 
 TICK_SPEED_LABEL = 'Tick Speed'
 
+# mutated each time a plot is created
+plot_number = 0
+def next_plot_number():
+  global plot_number
+  plot_number += 1
+  return plot_number
+
 # plots the logical clock value as a function of real time for each client in the given round
 def plotLogicialClockValueVsRealTime(path_to_rnd, rnd):
     # returns a list of logical clock values and a list of real times of the same length, with indices in each list corresponding to one another
@@ -88,7 +95,7 @@ def plotLogicialClockValueVsRealTime(path_to_rnd, rnd):
       plt.xlabel('Real Time (ms, Unix Epoch)')
       plt.ylabel('Logical Clock Value')
       plt.legend()
-      plt.title('Logical Clock Value vs Real Time for {}'.format(rnd))
+      plt.title('Figure {}: Logical Clock Value vs Real Time for {}'.format(next_plot_number(), rnd))
       # save under visualizations
       plt.savefig(os.path.join('.', 'visualizations1', 'logical_clock_values','logical_clock_value_vs_real_time_round_{}.png'.format(rnd)))
       plt.clf()
@@ -124,7 +131,7 @@ def plotMessageQueueLengthVsRealTime(path_to_rnd, rnd):
     plt.xlabel('Real Time (ms, Unix Epoch)')
     plt.ylabel('Message Queue Length')
     plt.legend()
-    plt.title('Message Queue Length vs Real Time for {}'.format(rnd))
+    plt.title('Figure {}: Message Queue Length vs Real Time for {}'.format(next_plot_number(), rnd))
     # save under visualizations
     plt.savefig(os.path.join('.', 'visualizations1', 'message_queue_lengths','message_queue_lengths_vs_real_time_round_{}.png'.format(rnd)))
     plt.clf()
@@ -145,15 +152,16 @@ def plotMessageQueueLengthVsRealTime(path_to_rnd, rnd):
 Execution
 '''
 
-def forEachRound(experiment_path):
-    for rnd in os.listdir(experiment_path):
+# executes the given function on each round in the given experiment, giving the function the path to the round and the round name
+def forEachRound(experiment_path, function):
+    for rnd in sorted(os.listdir(experiment_path)):
         path_to_rnd = os.path.join(experiment_path, rnd)
-        plotLogicialClockValueVsRealTime(path_to_rnd, rnd)
-        plotMessageQueueLengthVsRealTime(path_to_rnd, rnd)
+        function(path_to_rnd, rnd)
 
 def main():
   experiment1 = os.path.join('.', 'experiment1')
-  forEachRound(experiment1)
+  forEachRound(experiment1, plotLogicialClockValueVsRealTime)
+  forEachRound(experiment1, plotMessageQueueLengthVsRealTime)
 
 if __name__ == '__main__':
   main()
