@@ -142,11 +142,15 @@ def plotMessageQueueLengthVsRealTime(path_to_rnd, rnd):
 Execution
 '''
 
-def forEachRound():
-    experiment1 = os.path.join('.', 'experiment1')
-    for rnd in os.listdir(experiment1):
-        path_to_rnd = os.path.join(experiment1, rnd)
+def forEachRound(experiment_path):
+    for rnd in os.listdir(experiment_path):
+        path_to_rnd = os.path.join(experiment_path, rnd)
         plotLogicialClockValueVsRealTime(path_to_rnd, rnd)
         plotMessageQueueLengthVsRealTime(path_to_rnd, rnd)
 
-forEachRound()
+def main():
+  experiment1 = os.path.join('.', 'experiment1')
+  forEachRound(experiment1)
+
+if __name__ == '__main__':
+  main()
