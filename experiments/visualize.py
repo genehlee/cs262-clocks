@@ -3,6 +3,9 @@ import re
 import matplotlib.pyplot as plt
 
 '''
+This script is used to visualize the results of the experiments.
+
+FOR EXPERIMENT 1:
 We need to discuss:
 - as a function of real time
   - logical clock values (to see jumps)
