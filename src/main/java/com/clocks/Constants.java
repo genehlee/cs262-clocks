@@ -21,5 +21,5 @@ public class Constants {
     // Constants for simulation
     public static final int MILLISECONDS_PER_SECOND = 1000;
     public static final int WAIT_TIME_FOR_CONNECTIONS = 1 * MILLISECONDS_PER_SECOND;
-    public static final int LIFETIME = 5 * MILLISECONDS_PER_SECOND;
+    public static final int LIFETIME = 60 * MILLISECONDS_PER_SECOND;
 }
