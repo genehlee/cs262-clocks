@@ -19,4 +19,5 @@ Open VSCode, go to the testing tab, and run the tests from there.
 
 ## Generating the visualizations
 1. Place the results of the simulation(s) into the proper directories under `experiments`
-2. Run `python3 visualize.py` to generate the visualizations, which will be placed under `visualizations1` or `visualizations2`.
+2. If not already installed, use `sudo pip3 install matplotlib` to install `matplotlib`
+3. Run `python3 visualize.py` to generate the visualizations, which will be placed under `visualizations1` or `visualizations2`.

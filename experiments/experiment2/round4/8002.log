@@ -1,0 +1,117 @@
+Ticks per second: 2
+Received message at 1678177407906 at logical clock time 0. Queue length is 0.
+Received message at 1678177408407 at logical clock time 1. Queue length is 0.
+Internal event at 1678177408912 at logical clock time 2.
+Sent a message at 1678177409505 at logical clock time 3.
+Sent two messages at 1678177410046 at logical clock time 4.
+Internal event at 1678177410548 at logical clock time 5.
+Received message at 1678177411052 at logical clock time 9. Queue length is 0.
+Internal event at 1678177411556 at logical clock time 10.
+Sent two messages at 1678177412065 at logical clock time 11.
+Sent a message at 1678177412574 at logical clock time 12.
+Sent a message at 1678177413089 at logical clock time 13.
+Internal event at 1678177413593 at logical clock time 14.
+Internal event at 1678177414098 at logical clock time 15.
+Received message at 1678177414602 at logical clock time 19. Queue length is 0.
+Received message at 1678177415106 at logical clock time 20. Queue length is 0.
+Internal event at 1678177415611 at logical clock time 21.
+Received message at 1678177416116 at logical clock time 23. Queue length is 0.
+Received message at 1678177416621 at logical clock time 25. Queue length is 0.
+Internal event at 1678177417123 at logical clock time 26.
+Sent a message at 1678177417628 at logical clock time 27.
+Received message at 1678177418130 at logical clock time 30. Queue length is 0.
+Internal event at 1678177418634 at logical clock time 31.
+Received message at 1678177419135 at logical clock time 32. Queue length is 1.
+Received message at 1678177419637 at logical clock time 33. Queue length is 1.
+Received message at 1678177420141 at logical clock time 34. Queue length is 2.
+Received message at 1678177420646 at logical clock time 35. Queue length is 1.
+Received message at 1678177421149 at logical clock time 36. Queue length is 1.
+Received message at 1678177421653 at logical clock time 38. Queue length is 1.
+Received message at 1678177422157 at logical clock time 40. Queue length is 1.
+Received message at 1678177422661 at logical clock time 41. Queue length is 0.
+Sent a message at 1678177423172 at logical clock time 42.
+Sent two messages at 1678177423687 at logical clock time 43.
+Internal event at 1678177424191 at logical clock time 44.
+Received message at 1678177424695 at logical clock time 48. Queue length is 0.
+Received message at 1678177425199 at logical clock time 50. Queue length is 0.
+Received message at 1678177425699 at logical clock time 52. Queue length is 0.
+Internal event at 1678177426200 at logical clock time 53.
+Received message at 1678177426700 at logical clock time 55. Queue length is 0.
+Sent two messages at 1678177427211 at logical clock time 56.
+Received message at 1678177427711 at logical clock time 58. Queue length is 0.
+Received message at 1678177428212 at logical clock time 59. Queue length is 0.
+Received message at 1678177428717 at logical clock time 61. Queue length is 0.
+Internal event at 1678177429222 at logical clock time 62.
+Sent a message at 1678177429726 at logical clock time 63.
+Internal event at 1678177430229 at logical clock time 64.
+Sent two messages at 1678177430744 at logical clock time 65.
+Internal event at 1678177431247 at logical clock time 66.
+Sent a message at 1678177431754 at logical clock time 67.
+Sent a message at 1678177432265 at logical clock time 68.
+Sent a message at 1678177432776 at logical clock time 69.
+Internal event at 1678177433278 at logical clock time 70.
+Sent two messages at 1678177433795 at logical clock time 71.
+Sent two messages at 1678177434310 at logical clock time 72.
+Received message at 1678177434811 at logical clock time 79. Queue length is 0.
+Sent two messages at 1678177435324 at logical clock time 80.
+Received message at 1678177435827 at logical clock time 82. Queue length is 0.
+Sent a message at 1678177436335 at logical clock time 83.
+Sent a message at 1678177436845 at logical clock time 84.
+Received message at 1678177437348 at logical clock time 86. Queue length is 0.
+Internal event at 1678177437853 at logical clock time 87.
+Sent two messages at 1678177438367 at logical clock time 88.
+Received message at 1678177438869 at logical clock time 91. Queue length is 0.
+Internal event at 1678177439371 at logical clock time 92.
+Sent a message at 1678177439877 at logical clock time 93.
+Received message at 1678177440382 at logical clock time 95. Queue length is 0.
+Sent a message at 1678177440887 at logical clock time 96.
+Internal event at 1678177441391 at logical clock time 97.
+Received message at 1678177441894 at logical clock time 100. Queue length is 0.
+Received message at 1678177442397 at logical clock time 101. Queue length is 0.
+Received message at 1678177442902 at logical clock time 102. Queue length is 0.
+Sent a message at 1678177443412 at logical clock time 103.
+Received message at 1678177443913 at logical clock time 106. Queue length is 0.
+Internal event at 1678177444413 at logical clock time 107.
+Received message at 1678177444913 at logical clock time 108. Queue length is 0.
+Received message at 1678177445417 at logical clock time 109. Queue length is 1.
+Received message at 1678177445920 at logical clock time 110. Queue length is 1.
+Received message at 1678177446424 at logical clock time 111. Queue length is 0.
+Received message at 1678177446925 at logical clock time 114. Queue length is 0.
+Sent a message at 1678177447428 at logical clock time 115.
+Sent a message at 1678177447933 at logical clock time 116.
+Received message at 1678177448437 at logical clock time 119. Queue length is 0.
+Sent two messages at 1678177448953 at logical clock time 120.
+Sent a message at 1678177449463 at logical clock time 121.
+Sent a message at 1678177449974 at logical clock time 122.
+Received message at 1678177450477 at logical clock time 124. Queue length is 0.
+Received message at 1678177450982 at logical clock time 126. Queue length is 0.
+Received message at 1678177451483 at logical clock time 127. Queue length is 0.
+Received message at 1678177451988 at logical clock time 129. Queue length is 0.
+Sent a message at 1678177452498 at logical clock time 130.
+Received message at 1678177453003 at logical clock time 132. Queue length is 0.
+Received message at 1678177453506 at logical clock time 133. Queue length is 1.
+Received message at 1678177454006 at logical clock time 134. Queue length is 0.
+Received message at 1678177454510 at logical clock time 137. Queue length is 0.
+Received message at 1678177455012 at logical clock time 138. Queue length is 0.
+Received message at 1678177455512 at logical clock time 140. Queue length is 0.
+Received message at 1678177456014 at logical clock time 141. Queue length is 0.
+Sent a message at 1678177456525 at logical clock time 142.
+Internal event at 1678177457026 at logical clock time 143.
+Internal event at 1678177457527 at logical clock time 144.
+Received message at 1678177458032 at logical clock time 147. Queue length is 0.
+Received message at 1678177458533 at logical clock time 148. Queue length is 0.
+Received message at 1678177459036 at logical clock time 149. Queue length is 1.
+Received message at 1678177459540 at logical clock time 150. Queue length is 0.
+Received message at 1678177460044 at logical clock time 153. Queue length is 0.
+Sent a message at 1678177460547 at logical clock time 154.
+Sent a message at 1678177461052 at logical clock time 155.
+Sent a message at 1678177461561 at logical clock time 156.
+Internal event at 1678177462066 at logical clock time 157.
+Sent two messages at 1678177462580 at logical clock time 158.
+Received message at 1678177463085 at logical clock time 162. Queue length is 0.
+Received message at 1678177463590 at logical clock time 163. Queue length is 0.
+Received message at 1678177464094 at logical clock time 164. Queue length is 0.
+Received message at 1678177464598 at logical clock time 166. Queue length is 0.
+Received message at 1678177465102 at logical clock time 168. Queue length is 0.
+Received message at 1678177465606 at logical clock time 169. Queue length is 0.
+Received message at 1678177466111 at logical clock time 170. Queue length is 0.
